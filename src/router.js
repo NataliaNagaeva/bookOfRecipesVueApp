@@ -9,7 +9,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('./views/Home.vue')
     },
     {
       path: '/registration',
@@ -22,10 +22,7 @@ export default new Router({
     {
       path: '/signIn',
       name: 'signIn',
-      // route level code-splitting
-      // this generates a separate chunk (signIn.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "signIn" */ './views/SignIn.vue')
+      component: () => import('./views/SignIn.vue')
     }
   ]
 })

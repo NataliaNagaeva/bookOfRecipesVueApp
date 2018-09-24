@@ -7,17 +7,19 @@
       <div class="alert alert-danger mb-2" v-if="error">
         Пароли не совпадают или он слишком короткий
       </div>
-      <input type="submit" value="Зарегистрироваться" class="btn btn-primary" :class="{ 'disabled': !isValidForm }">
-      
+      <input type="submit" value="Зарегистрироваться" class="btn btn-primary" :class="{ 'disabled': !isValidForm }">      
     </form>
   </div>
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
+
   export default {
-    name: 'registrataion',
+    name: 'registration',
     data () {
       return {
+        //TODO вынести в store, прописать мутацию и геттер
         user: {
           email: null,
           password: null,
@@ -29,17 +31,23 @@
       }
     },
     methods: {
+      ...mapActions(['registration']),
       registerNewUser () {
         if (this.user.password !== this.user.confirmPassword || this.user.password.length < 6) {
           this.error = true
         } else {
-          firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode,' ', errorMessage);
-            // ...
-          });
+          this.registration(this.user)
+            .then( () => {
+              this.$emit('reg-success', 'sign-in');
+              this.$router.replace('/signIn');
+            })
+            .catch( (error) => {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(errorCode,' ', errorMessage);
+              // ...
+            });
         }        
       }
     }
