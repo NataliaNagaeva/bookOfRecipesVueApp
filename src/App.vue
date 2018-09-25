@@ -2,24 +2,29 @@
   <div id="app">
     <template v-if="!getToken">
       <div id="nav">
-        <router-link to="/signIn" class="lead text-uppercase">Вход</router-link>         
+        <router-link to="/signIn" class="lead text-uppercase">Вход</router-link>     
         |
         <router-link  to="/registration" class="lead text-uppercase">Регистрация</router-link>
-      </div>
-      <router-view @reg-success="sign = $event"/>    
-    </template>
+      </div>         
+    </template>    
     <template v-else>
       вход выполнен
-      <button @click.prevent="signOut">Выход</button>
+      <button @click.prevent="signOut" class="btn btn-primary">Выход</button>
     </template>
+    <transition name="slide-fade">
+      <router-view @reg-success="sign = $event"/>
+    </transition>
   </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     name: 'app',
+    fetch({store}) {
+        store.dispatch['getAuthUser'];
+    },
     data () {
       return {
         // TODO вынести в store, прописать мутацию и геттер
@@ -28,21 +33,26 @@
       }
     },
     computed: {
-      ...mapGetters(['getToken']),
+      ...mapGetters(['getToken'])
     },
     methods: {
-      signOut() {
-        firebase.auth().signOut().then( () => {
-          this.$store.commit('setToken', null);
-        }).catch(function(error) {
-          // An error happened.
-        });
-      }
+      ...mapActions(['signOut'])
     }
   }
 </script>
 
 <style lang="scss">
+  /* Анимации появления и исчезновения могут иметь */
+  /* различные продолжительности и динамику.       */
+  .slide-fade-enter-active {
+    transition: all .8s ease;
+  }
+
+  .slide-fade-enter {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

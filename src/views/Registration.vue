@@ -40,13 +40,6 @@
             .then( () => {
               this.$emit('reg-success', 'sign-in');
               this.$router.replace('/signIn');
-            })
-            .catch( (error) => {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              console.log(errorCode,' ', errorMessage);
-              // ...
             });
         }        
       }

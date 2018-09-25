@@ -23,6 +23,11 @@ export default new Router({
       path: '/signIn',
       name: 'signIn',
       component: () => import('./views/SignIn.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('./views/Settings.vue')
     }
   ]
 })

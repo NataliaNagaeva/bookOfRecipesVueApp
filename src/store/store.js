@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      token: localStorage && localStorage.getItem('token') || null
+      token: localStorage && localStorage.getItem('token') || null,
+      authUser: null
     },
     mutations,
     actions,
